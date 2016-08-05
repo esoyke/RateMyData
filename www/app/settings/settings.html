@@ -1,0 +1,12 @@
+<ion-view title='Settings' ng-controller='SettingsCtrl as vm'>
+  <ion-content class='has-header padding'>
+  	<h3>Test packet size</h3>
+  	<div class="item range">
+		  <i class="icon ion-ios-cloud-download-outline"></i>
+		  <input type="range" name="downloadSize" min="64" max="4194" ng-model="vm.downloadSize" >
+		  <i class="icon ion-ios-cloud-download-outline icon-larger padding-right-50"></i>
+		</div>
+    <h4 ng-show='vm.downloadSize && vm.smallDL()'>{{vm.downloadSize}} KB</h4>
+    <h4 ng-show='vm.downloadSize && vm.largeDL()'>{{vm.downloadSize}} MB</h4>
+  </ion-content>
+</ion-view>
