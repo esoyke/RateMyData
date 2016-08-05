@@ -4,6 +4,7 @@
 	function settings(){
 		var vm = this;
 
+		// defaults to 128 (KB)
 		vm.downloadSize = 128;
 
 		function downloadSize() {

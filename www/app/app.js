@@ -13,10 +13,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "google-ma
       StatusBar.styleDefault();
     }
 
-    DSCacheFactory('leagueDataCache', {storageMode: 'localStorage', maxAge: 60000, deleteOnExpire: 'aggressive'});
-    DSCacheFactory('leaguesCache', {storageMode: 'localStorage', maxAge: 60000, deleteOnExpire: 'aggressive'});
-    DSCacheFactory('myTeamsCache', {storageMode: 'localStorage'});
-    DSCacheFactory('staticCache', {storageMode: 'localStorage'});
+    DSCacheFactory('historyCache', {storageMode: 'localStorage'});
 
    $location.path('/tab/dash');
    $rootScope.$apply();
@@ -52,7 +49,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "google-ma
       url: "/networkMap",
       views: {
         "tab-networkMap": {
-          templateUrl: "app/home/networkMap.html"
+          templateUrl: "app/history/historyMap.html"
         }
       }
     })

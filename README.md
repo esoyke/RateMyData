@@ -11,6 +11,8 @@ Rate my Data runs in the background, checking your network connectivity and perf
 
 You are helping to crowd-source a big data collection of device and carrier performance, so you can see if it's time to switch to greener pastures or stick with your current setup.
 
+You can tune how often the service checks your performance and the size of the test packets if you're concerned about how much data usage the app uses. You can also schedule it to only check performance during certain times of the day.
+
 ## I'm paranoid, are you tracking me?
 
 Trust me, Google, Apple and the NSA know all there is to know about your movements. All we track is an anonymous unique ID. We don't know who you are, just what device you're on and your carrier. That way we can compile what devices and what carriers perform in different locations and different times.

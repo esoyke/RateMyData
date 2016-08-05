@@ -14,7 +14,7 @@
 
 			// get download performance
 			networkPerformance.ping().then(function(data){
-				console.log(data);
+				//console.log(data);
 				vm.downloadTime = data.elapsed;
 				vm.downloadSize = data.size;
 				vm.downloadRate = data.rate;
