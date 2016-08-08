@@ -40,9 +40,11 @@
 			var FILE_SIZE = settings.downloadSize()*1000; //TODO- make an customizable option?
 			// TODO - still need a reliable download source, Netflix does a hash of the unixtime, along with some secret value, 
 			// (The links expire)
-			// var defaultURL = 'https://ipv4_1-cxl0-c044.1.tpa001.ix.nflxvideo.net/speedtest/range/0-'+FILE_SIZE+'?c=us&n=33363&v=3&e=1470431870&t=7Wfx_THvfxtcDNoNMP4UcW73AIs';
-			var defaultURL = 'https://ipv4_1-cxl0-c048.1.tpa001.ix.nflxvideo.net/speedtest/range/0-'+FILE_SIZE+'?c=us&n=33363&v=3&e=1470436189&t=WNIabRkG2ueA0fptpDfygZqpAO0';
-			//var defaultURL = 'http://ipv4.download.thinkbroadband.com/5MB.zip'; //getting 403 from here, but browser is OK?
+			var tempNetflix = 'https://ipv4_1-lagg0-c005.1.atl001.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470679607&t=vZaUQh44soahXgypeq8kNG4vMMY';
+			//replace their hard-coded file size with our packet size setting
+			var pos1 = tempNetflix.indexOf('/0-')+3;
+			var pos2 = tempNetflix.indexOf('?');
+			var defaultURL = tempNetflix.substring(0, pos1)+FILE_SIZE+tempNetflix.substring(pos2, tempNetflix.length);
 			var cacheKilla = new Date().getTime();
 			var url = args || defaultURL+'&foo='+cacheKilla;//+'?foo='+cacheKilla;
 			console.log(url);
@@ -53,7 +55,7 @@
             var elapsed = tEnd - tStart;
 
             // returns rate in Kbps
-            var results = {'time': tEnd.getTime(), 'elapsed':elapsed, 'size':FILE_SIZE/1000, 'rate': (FILE_SIZE/(elapsed/1000))/1000};
+            var results = {'id': tEnd.getTime(), 'elapsed':elapsed, 'size':FILE_SIZE/1000, 'rate': Math.round((FILE_SIZE/(elapsed/1000))/1000)};
             networkHistory.addPoint(results);
 						$ionicLoading.hide();
 						deferred.resolve(results);

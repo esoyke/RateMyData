@@ -1,14 +1,20 @@
-<ion-view title='History Map' ng-controller='HistoryCtrl as vm'>
-  <ion-content class="has-header">
-	<div class='list'>
-		<h4>{{vm.historyDataPoints}}</h4>
-<!-- 		<div class='item item-button-right' ng-repeat='location in vm.locations'>
-			{{location.name}}
-			<button class="buttons">
-				<a class='button button-light' ng-href='#/app/location-map/{{location.id}}'>
-					<i class='icon ion-ios-location'></i>
-				</a>
-			</button>
-	</div> -->
+<ion-view title='History Map' ng-controller='HistoryCtrl as vm' class="angular-google-map-container">
+  <!-- <ion-content class="has-header"> -->
+  <ion-content class="has-no-header">
+
+			<ui-gmap-google-map center="vm.map.center" zoom="vm.map.zoom" draggable="true" options="vm.map.options" events="vm.map.events" control="vm.googlemap">
+<!-- 		<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'> -->
+				<ui-gmap-markers models="vm.markers" idKey='vm.markers.id' coords="'self'" icon="'icon'" options="'options'" click="onClick" events="markers.events">
+				<!-- doRebuildAll="true"  click="vm.clickMapPoint(rate)" -->
+        </ui-gmap-markers>
+        <ui-gmap-window coords="vm.MapOptions.markers.selected" show="vm.windowOptions.show" options="vm.windowOptions" closeClick="vm.closeClick()">
+        	<div>
+		        <h3>{{vm.MapOptions.markers.selected.rate}} Kbps</h3>
+	  	      <h5>({{vm.MapOptions.markers.selected.size}} KB in {{vm.MapOptions.markers.selected.elapsed}} ms)</h5>
+	  	      <h5>{{vm.MapOptions.markers.selected.id | date:'medium' }}</h5>
+		      </div>
+        </ui-gmap-window>
+		</ui-gmap-google-map>
+
   </ion-content>
 </ion-view>

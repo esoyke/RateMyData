@@ -1,4 +1,4 @@
-angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "google-maps", "ngCordovaMocks"])
+angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordovaMocks", "uiGmapgoogle-maps"]) // , "uiGmapgoogle-maps" "google-maps", 
 
 .run(function($ionicPlatform, DSCacheFactory, $location,$rootScope) {
   $ionicPlatform.ready(function() {
@@ -84,5 +84,14 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "google-ma
     ;
 
     // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home/network');
-});
+  $urlRouterProvider.otherwise('/home/networkMap');
+})
+
+// .config(function(uiGmapGoogleMapApiProvider) {
+//     uiGmapGoogleMapApiProvider.configure({
+//         //    key: 'your api key',
+//         //v: '3.20', //defaults to latest 3.X anyhow
+//         libraries: 'weather,geometry,visualization'
+//     });
+// })
+;
