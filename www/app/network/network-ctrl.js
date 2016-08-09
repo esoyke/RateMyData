@@ -8,19 +8,27 @@
 			console.log('calling ping download...');
 
 			// get network type
-			networkPerformance.getNetwork().then(function(netData){
+			networkPerformance.getNetwork()
+			.then(function(netData){
 				vm.networkType = netData;
+				return netData;
+			})
+			// get download performance
+			.then(function(netData){
+				return networkPerformance.ping(netData);
+			})
+			.then(function(data){
+					console.log(data);
+					vm.downloadTime = data.elapsed;
+					vm.downloadSize = data.size;
+					vm.downloadRatePretty = data.rate < 1000 ? data.rate+' Kbps' : data.rate/1000 + ' Mbps';
+					vm.downloadSizePretty = vm.downloadSize < 1000 ? vm.downloadSize+'KB' : vm.downloadSize/1000+'MB';
+			
+			}, function(err){
+				console.log('error getting network ping');
+				vm.downloadRatePretty = 'Hrmmmm, couldn\'t get a network connection.'; 
 			});
 
-			// get download performance
-			networkPerformance.ping().then(function(data){
-				//console.log(data);
-				vm.downloadTime = data.elapsed;
-				vm.downloadSize = data.size;
-				vm.downloadRate = data.rate;
-				vm.downloadSizePretty = vm.downloadSize < 1000 ? vm.downloadSize+'KB' : vm.downloadSize/1000+'MB';
-			});
-		
 		}
 
 	}

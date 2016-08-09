@@ -1,23 +1,32 @@
 (function(){
 	'use strict';
-	angular.module('rateMyData').factory('settings', [settings]);
-	function settings(){
+	angular.module('rateMyData').factory('settings', ['DSCacheFactory', settings]);
+	function settings(DSCacheFactory){
 		var vm = this;
 
-		// defaults to 128 (KB)
-		vm.downloadSize = 128;
+		// setting defaults
+		vm.defaultDownloadSize = 128;		// (KB)
+		vm.defaultTestRate = 60;				// (seconds)
+
+		self.settingsCache = DSCacheFactory.get('settingsCache');
 
 		function downloadSize() {
-			return vm.downloadSize;
+			return self.settingsCache.get('downloadSize') || vm.defaultDownloadSize;
 		};
 		function updateDownloadSize(data) {
-			vm.downloadSize = data;
-			//TODO- persist to localStorage for future sessions
+			self.settingsCache.put('downloadSize', data);	
 		}
-
+		function testRate() {
+			return self.settingsCache.get('testRate') || vm.defaultTestRate;
+		};
+		function updateTestRate(data) {
+			self.settingsCache.put('testRate', data);	
+		}
 		return {
 			downloadSize: downloadSize,
-			updateDownloadSize: updateDownloadSize
+			updateDownloadSize: updateDownloadSize,
+			testRate: testRate,
+			updateTestRate: updateTestRate
 		}
 	}
 })();

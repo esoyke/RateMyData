@@ -1,7 +1,12 @@
 <ion-view title='Network Performance' ng-controller='NetworkCtrl as vm'>
   <ion-content class='has-header padding'>
-    <button class='button button-positive' ng-click='vm.pingTest()'>Test speed</button>
-    <h2 ng-show='vm.downloadTime'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms ({{vm.downloadRate | number:0}} Kbps)</h2>
-    <h4 ng-show='vm.downloadTime && vm.networkType'>(over {{vm.networkType}})</h4>
+    <button class='button button-block button-positive' ng-click='vm.pingTest()'>Test Connection</button>
+    <div class='center'>
+	    <h1 ng-show='vm.downloadRatePretty'>{{vm.downloadRatePretty}}</h1>
+	    <h3 ng-show='vm.downloadSizePretty'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms</h3>
+
+	<!--     <h2 ng-show='vm.downloadSizePretty'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms ({{vm.downloadRate | number:0}} Kbps)</h2> -->
+	    <h4 ng-show='vm.downloadTime && vm.networkType'>(over {{vm.networkType}})</h4>
+	  </div>
   </ion-content>
 </ion-view>

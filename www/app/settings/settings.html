@@ -1,12 +1,113 @@
 <ion-view title='Settings' ng-controller='SettingsCtrl as vm'>
   <ion-content class='has-header padding'>
-  	<h3>Test packet size</h3>
-  	<div class="item range">
-		  <i class="icon ion-ios-cloud-download-outline"></i>
-		  <input type="range" name="downloadSize" min="64" max="4194" ng-model="vm.downloadSize" >
-		  <i class="icon ion-ios-cloud-download-outline icon-larger padding-right-50"></i>
-		</div>
-    <h4 ng-show='vm.downloadSize && vm.smallDL()'>{{vm.downloadSize}} KB</h4>
-    <h4 ng-show='vm.downloadSize && vm.largeDL()'>{{vm.downloadSize}} MB</h4>
+
+    <div class=''>
+      <h2 ng-show='vm.downloadSize && vm.smallDL()'>Test packet size - {{vm.downloadSize}} KB</h2>
+      <h2 ng-show='vm.downloadSize && vm.largeDL()'>Test packet size - {{vm.downloadSize}} MB</h2>
+    	<div class="item range no-border">
+  		  <i class="icon ion-ios-cloud-download-outline"></i>
+  		  <input type="range" name="downloadSize" min="64" max="4194" ng-model="vm.downloadSize" >
+  		  <i class="icon ion-ios-cloud-download-outline icon-larger padding-right-50"></i>
+  		</div>
+    </div>
+<br>
+    <div class=''>
+      <h2>Test interval - {{vm.testRate}} seconds</h2>
+      <div class="item range no-border">
+        <i class="icon ion-ios-time-outline"></i>
+        <input type="range" name="testRate" min="10" max="3600" ng-model="vm.testRate" >
+        <i class="icon ion-ios-time-outline icon-larger padding-right-50"></i>
+      </div>
+    </div>
+
+
+    <div > 
+      <div class="row">
+        <div class="col-50 col-center">
+          <h2>Share mode</h2>
+          <h5 ng-show="vm.shareMode">(Share anonymous performance)</h5>
+          <h5 ng-show="!vm.shareMode">(No peer statistics or sharing)</h5>
+        </div>
+        <ion-toggle class='col-50 col-center no-border' ion-toggle-text="<i class='icon ion-ios-people'></i>&nbsp;Community;<i class='icon ion-ios-person'></i>&nbsp;Standalone" ng-model="vm.shareMode">
+        <h2>&nbsp;</h2><!-- cheesy horizontal row alignment fix -->
+        </ion-toggle>
+      
+      </div>
+<!--       <div class="row">
+        <h5 ng-show="vm.shareMode">(Share anonymous performance)</h5>
+        <h5 ng-show="!vm.shareMode">(No peer statistics or sharing)</h5>
+      </div> -->
+      <!--   <ion-toggle ion-toggle-text="<i class='icon ion-ios-people'></i>&nbsp;Community;<i class='icon ion-ios-person'></i>&nbsp;Standalone" ng-model="vm.shareMode">
+          <h1>Share mode</h1>
+          <h4 ng-show="vm.shareMode">(Share anonymous performance)</h4>
+          <h4 ng-show="!vm.shareMode">(No peer statistics or sharing)</h4>
+        </ion-toggle> -->
+    </div>
+
+<!--     <button class="button button-block button-assertive" ng-click="vm.confirmClearLocal()">
+      Clear local storage
+    </button>
+
+ -->
+
+<!--     <div class='card'>
+      <div class='row'>
+        <div class='col-50'>
+          <i class="icon ion-ios-people-outline icon-medium" ng-show="vm.shareMode"></i>
+          <h3 ng-show="vm.shareMode">Community mode</h3>
+          </div>
+          
+          <div class="row">
+          <i class="icon ion-ios-person-outline icon-medium" ng-show="!vm.shareMode"></i> 
+          <h3 ng-show="!vm.shareMode">Standalone mode</h3>
+          </div>
+          <h4 ng-show="!vm.shareMode">(no peer statistics or sharing)</h4>
+
+        </div>
+        <div class='col col-center'>
+foo
+        </div>
+        <div class='col-50 col-center'>
+          <label class="toggle padding-right">
+             <input type="checkbox" ng-model="vm.shareMode">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+          </label>
+        </div>
+      </div>
+    </div>
+ -->
+
+<!--     <div class='card'>
+      <div class="row">
+      <i class="icon ion-ios-people-outline icon-medium" ng-show="vm.shareMode"></i>
+      <h3 ng-show="vm.shareMode">Community mode</h3>
+      </div>
+      
+      <div class="row">
+      <i class="icon ion-ios-person-outline icon-medium" ng-show="!vm.shareMode"></i> 
+      <h3 ng-show="!vm.shareMode">Standalone mode</h3>
+      </div>
+      <h4 ng-show="!vm.shareMode">(no peer statistics or sharing)</h4>
+      
+      <label class="toggle padding-right">
+         <input type="checkbox" ng-model="vm.shareMode">
+         <div class="track">
+           <div class="handle"></div>
+         </div>
+      </label>
+
+    </div>
+     -->
+
   </ion-content>
+  <div class="fixed-outside">
+    <div class="row">
+        <button class="button button-block button-assertive" ng-click="vm.confirmClearLocal()">
+          Clear local storage
+        </button>
+    </div>
+  </div>
+
 </ion-view>

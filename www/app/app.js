@@ -14,6 +14,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
     }
 
     DSCacheFactory('historyCache', {storageMode: 'localStorage'});
+    DSCacheFactory('settingsCache', {storageMode: 'localStorage'});
 
    $location.path('/tab/dash');
    $rootScope.$apply();
@@ -84,7 +85,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
     ;
 
     // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home/networkMap');
+  $urlRouterProvider.otherwise('/home/settings');
 })
 
 // .config(function(uiGmapGoogleMapApiProvider) {
