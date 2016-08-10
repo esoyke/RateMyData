@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
-	angular.module('rateMyData').factory('networkPerformance', ['$filter', '$http', '$q', '$timeout', '$ionicLoading', '$cordovaNetwork', 'settings', 'networkHistory', networkPerformance]);
-	function networkPerformance($filter, $http, $q, $timeout, $ionicLoading, $cordovaNetwork, settings, networkHistory){
+	angular.module('rateMyData').factory('networkPerformance', ['$filter', '$http', '$q', '$timeout', '$ionicPlatform', '$ionicLoading', '$cordovaNetwork', '$cordovaGeolocation', 'settings', 'networkHistory', networkPerformance]);
+	function networkPerformance($filter, $http, $q, $timeout, $ionicPlatform, $ionicLoading, $cordovaNetwork, $cordovaGeolocation, settings, networkHistory){
 	
 		//test a simulated ping
 		function pingFake(){
@@ -16,15 +16,50 @@
 			return deferred.promise;
 		};
 
-		// return the network type
-		function cordovaNetwork(){
+		// return the connection type
+		function cordovaNetwork() {
+	    var q = $q.defer();
+	    if(settings.DEVMODE())
+	    	q.resolve('wifi');
+	    //$ionicPlatform.ready(function () {
+	    else
+	    	q.resolve($cordovaNetwork.getNetwork());
+	    //});
+	    return q.promise;
+	  };
+
+	  // return if online
+	  function isOnline(){
+	  	var q = $q.defer();
+			if(settings.DEVMODE())
+	    	q.resolve(true);
+	    else
+	    	q.resolve($cordovaNetwork.isOnline());
+	    return q.promise;
+	  }
+
+		function currentPosition(){
 			var deferred = $q.defer();
+			if(settings.DEVMODE()){
+				console.log('Getting mocked geo...');
+				// make it look like I took a random stroll around town
+				var latVariation = Math.floor(Math.random() * 9999) + 1  ;
+				var longVariation = Math.floor(Math.random() * 99999) + 1  ;
+				var mockPosition = {coords:{latitude: 27.80+''+latVariation, longitude: -82.7+''+longVariation}};
+				console.log('Mocked geo: ', mockPosition);
+				deferred.resolve(mockPosition);
+			}
+			else{
+				console.log('Getting Cordova geo...');
+				$cordovaGeolocation.getCurrentPosition().then(function(cordovaPosition){
+					console.log('Cordova geo: ');
+					console.log(cordovaPosition);
+					deferred.resolve(cordovaPosition);					
+				}, function(err){
+					console.log('error getting cordova geo: ', err);
+				});				
 
-			var netData = $cordovaNetwork.getNetwork();
-			//console.log(netData);
-
-			deferred.resolve(netData);
-
+			}
 			return deferred.promise;
 		};
 
@@ -40,7 +75,7 @@
 			var FILE_SIZE = settings.downloadSize()*1000; //TODO- make an customizable option?
 			// TODO - still need a reliable download source, Netflix does a hash of the unixtime, along with some secret value, 
 			// (The links expire)
-			var tempNetflix = 'https://ipv4_1-cxl0-c041.1.tpa001.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=33363&v=3&e=1470775296&t=0NLLbvmOX4teXR1M-5-b8gnU08M';
+			var tempNetflix = 'https://ipv4_1-cxl0-c119.1.mia003.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470863983&t=w_C0dfrOuWo_VJXFhdswlwV5DLw';
 			//replace their hard-coded file size with our packet size setting
 			var pos1 = tempNetflix.indexOf('/0-')+3;
 			var pos2 = tempNetflix.indexOf('?');
@@ -55,12 +90,23 @@
 						console.log('download complete');
 						var tEnd = new Date();
             var elapsed = tEnd - tStart;
-
-            // returns rate in Kbps
             var results = {'id': tEnd.getTime(), 'network': netData, 'elapsed':elapsed, 'size':FILE_SIZE/1000, 'rate': Math.round((FILE_SIZE/(elapsed/1000))/1000)};
-            networkHistory.addPoint(results);
-						$ionicLoading.hide();
-						deferred.resolve(results);
+            //decorate with current position
+            currentPosition().then(function(location){
+            	console.log(location);
+							var lat  = location.coords.latitude;
+				      var long = location.coords.longitude;
+				      var title = 'time- ' + data.id;
+							console.log(lat+','+long);							
+							_.extend(data, {title: title, latitude:lat, longitude:long});
+
+							// add the point to the history
+	            networkHistory.addPoint(results);
+							$ionicLoading.hide();
+							deferred.resolve(results);            	
+            })
+            // returns rate in Kbps
+
 					})
 				.error(function(err){
 					//console.log('Error with test download: ', err);
@@ -72,9 +118,12 @@
 			return deferred.promise;
     }
 
+
 		return {
 			ping: pingDownload,
-			getNetwork: cordovaNetwork
+			getNetwork: cordovaNetwork,
+			isOnline: isOnline,
+			currentPosition: currentPosition
 		}
 	}
 })();

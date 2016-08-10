@@ -1,10 +1,17 @@
-angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordovaMocks", "uiGmapgoogle-maps"]) // , "uiGmapgoogle-maps" "google-maps", 
+angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova", "uiGmapgoogle-maps"]) //  ngCordovaMocks
 
 .run(function($ionicPlatform, DSCacheFactory, $location,$rootScope) {
   $ionicPlatform.ready(function() {
+
+    // $cordovaNetwork.getNetwork().then(function(){
+    //   console.log('got network');
+    // }, function(){
+    //   console.log('failed to get network');
+    // });
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
+    if(window.cordova && window.cordova.plugins.Keyboard && window.cordova.plugins.Network ) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       //cordova.plugins.Keyboard.disableScroll(true);
     }
@@ -85,7 +92,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
     ;
 
     // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home/settings');
+  $urlRouterProvider.otherwise('/home/network');
 })
 
 // .config(function(uiGmapGoogleMapApiProvider) {

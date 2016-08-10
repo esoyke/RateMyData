@@ -1,43 +1,43 @@
 (function(){
-	angular.module('rateMyData').controller('HistoryCtrl', ['$rootScope', 'networkHistory', 'uiGmapGoogleMapApi', 'uiGmapIsReady', HistoryCtrl]);
+	angular.module('rateMyData').controller('HistoryCtrl', ['$rootScope', 'networkHistory', 'networkPerformance', 'uiGmapGoogleMapApi', 'uiGmapIsReady', HistoryCtrl]);
 
-	function HistoryCtrl($rootScope, networkHistory, uiGmapGoogleMapApi, uiGmapIsReady) {
+	function HistoryCtrl($rootScope, networkHistory, networkPerformance, uiGmapGoogleMapApi, uiGmapIsReady) {
 		var vm = this;
 
     vm.googlemap = {};
     vm.map = {
-            center: {
-							latitude: 27.808100,
-							longitude: -82.732800
-						},
-						zoom: 11,
-            pan: 1,
-            options: vm.mapOptions,
-            control: {},
-            events: {
-                tilesloaded: function (maps, eventName, args) {},
-                dragend: function (maps, eventName, args) {},
-                zoom_changed: function (maps, eventName, args) {}
-            }
-        };
+        center: {
+			latitude: 27.808100,     // lat/long will be overwritten from network.currentPosition
+			longitude: -82.732800
+		},
+		zoom: 12,
+        pan: 1,
+        options: vm.mapOptions,
+        control: {},
+        events: {
+            tilesloaded: function (maps, eventName, args) {},
+            dragend: function (maps, eventName, args) {},
+            zoom_changed: function (maps, eventName, args) {}
+        }
+    };
 
-		uiGmapGoogleMapApi.then(function(maps) {
-	    networkHistory.getHistoryPoints().then(function(points){
-	    	console.log(points);
-				vm.markers = points;
-				// vm.marker = {
-				// 	coords:{
-				// 	// latitude: vm.location.latitude,
-				// 	// longitude: vm.location.longitude,
-				// 	latitude: data[0].latitude,
-				// 	longitude: data[0].longitude,
-				// }
-				// 	// title: 'Tap for Details',
-				// 	// showWindow: true
-				// };
-
-			});			
-
+	uiGmapGoogleMapApi.then(function(maps) {
+        // networkHistory.getHistoryPoints().then(function(points){
+        //   //console.log(points);
+        //     vm.markers = points;
+        //   });
+        networkPerformance.currentPosition().then(function(current){
+            console.log('setting map center lat :'+current.coords.latitude);
+            console.log('setting map center lon :'+current.coords.longitude);
+            vm.map.center.latitude = current.coords.latitude;    
+            vm.map.center.longitude = current.coords.longitude;    
+            return;
+        })
+        .then(networkHistory.getHistoryPoints().then(function(points){
+    	  //console.log(points);
+			vm.markers = points;
+		  })
+        );			
     });	
 
 		vm.addMarkerClickFunction = function (markersArray) {
@@ -50,19 +50,17 @@
         });
     };
 
-		vm.windowOptions = {
-		    show: false
-		};
+	vm.windowOptions = {
+	    show: false
+	};
 
-		vm.onClick = function(data) {
-		    vm.windowOptions.show = !vm.windowOptions.show;
-		    //console.log('vm.windowOptions.show: ', vm.windowOptions.show);
-		    //console.log(data);
-		};
+	vm.onClick = function(data) {
+	    vm.windowOptions.show = !vm.windowOptions.show;
+	};
 
-		vm.closeClick = function() {
-		    vm.windowOptions.show = false;
-		};
+	vm.closeClick = function() {
+	    vm.windowOptions.show = false;
+	};
 
     uiGmapIsReady.promise() // if no value is put in promise() it defaults to promise(1)
     .then(function (instances) {
