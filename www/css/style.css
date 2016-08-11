@@ -6,6 +6,9 @@
 .icon-medium {
   font-size: 40px !important;
 }
+.padding-bottom-50 {
+    padding-bottom: 50px;
+}
 .padding-right-50 {
     padding-right: 50px;
 }
@@ -21,7 +24,7 @@
 }
 
 /* playing with variable resizing fonts */
-.variable-font-3 {
+/*.variable-font-3 {
   letter-spacing: 1vh;
   font-size: 3vh;
   margin-bottom: 1vh;
@@ -40,7 +43,7 @@
   letter-spacing: 1vh;
   font-size: 20vh;
   margin-bottom: 1vh;
-}
+}*/
 
 .no-border {
   border: 0;

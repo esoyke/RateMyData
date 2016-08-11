@@ -7,8 +7,9 @@
 		// setting defaults
 		vm.defaultDownloadSize = 128;		// (KB)
 		vm.defaultTestRate = 60;				// (seconds)
-		var thresholdSlow = 500;
-		var thresholdMedium = 1000;
+		vm.defaultThresholdSlow = 10;		// (KB)
+		vm.defaultThresholdMedium = 50;	// (KB)
+
 		self.settingsCache = DSCacheFactory.get('settingsCache');
 
 		function downloadSize() {
@@ -45,6 +46,22 @@
 		function updateDevMode(data) {
 			self.settingsCache.put('devMode', data);	
 		};
+		function thresholdSlow() {
+			return self.settingsCache.get('thresholdSlow') || vm.defaultThresholdSlow;
+		};
+		function updateThresholdSlow(data) {
+      //TODO for efficiency we might dedup to reduce the # of times the map is redrawn due to this
+			$rootScope.$emit('thresholdSlowChanged');
+			self.settingsCache.put('thresholdSlow', data);	
+		};
+		function thresholdMedium() {
+			return self.settingsCache.get('thresholdMedium') || vm.defaultThresholdMedium;
+		};
+		function updateThresholdMedium(data) {
+      //TODO for efficiency we might dedup to reduce the # of times the map is redrawn due to this
+			$rootScope.$emit('thresholdMediumChanged');
+			self.settingsCache.put('thresholdMedium', data);	
+		};
 		return {
 			downloadSize: downloadSize,
 			updateDownloadSize: updateDownloadSize,
@@ -58,6 +75,8 @@
 			updateDevMode: updateDevMode,
 			thresholdSlow: thresholdSlow,
 			thresholdMedium: thresholdMedium,
+			updateThresholdSlow: updateThresholdSlow,
+			updateThresholdMedium: updateThresholdMedium,
 		}
 	}
 })();

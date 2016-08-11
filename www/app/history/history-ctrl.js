@@ -1,7 +1,7 @@
 (function(){
-	angular.module('rateMyData').controller('HistoryCtrl', ['$rootScope', 'networkHistory', 'networkPerformance', 'uiGmapGoogleMapApi', 'uiGmapIsReady', HistoryCtrl]);
+	angular.module('rateMyData').controller('HistoryCtrl', ['$rootScope', '$scope', 'networkHistory', 'networkPerformance', 'uiGmapGoogleMapApi', 'uiGmapIsReady', HistoryCtrl]);
 
-	function HistoryCtrl($rootScope, networkHistory, networkPerformance, uiGmapGoogleMapApi, uiGmapIsReady) {
+	function HistoryCtrl($rootScope, $scope, networkHistory, networkPerformance, uiGmapGoogleMapApi, uiGmapIsReady) {
 		var vm = this;
 
     vm.googlemap = {};
@@ -22,10 +22,6 @@
     };
 
 	uiGmapGoogleMapApi.then(function(maps) {
-        // networkHistory.getHistoryPoints().then(function(points){
-        //   //console.log(points);
-        //     vm.markers = points;
-        //   });
         networkPerformance.currentPosition().then(function(current){
             console.log('setting map center lat :'+current.coords.latitude);
             console.log('setting map center lon :'+current.coords.longitude);
@@ -111,23 +107,18 @@
 		  return rate > 1500;
     }
 
-    // $scope.networkHistory = networkHistory;
-    // Adding a data point is dynamically updating the map, BUT since we are not adding the click handler
-    // the infowindow isn't there until an app refresh. Need to catch a marker addition and add the handler.
-    // TODO - why won't this catch updates in the history service??
+    // any of these events should cause a recreation of the map
+    angular.forEach(['thresholdSlowChanged', 'thresholdMediumChanged', 'newPoint', 'dataCleared'], function(value) {
+      $rootScope.$on(value, function(event) {
+      console.log('recreating map due to '+event.name);
+          // remap the whole marker array, just adding the new one wasn't working
+          networkHistory.getHistoryPoints().then(function(points){
+                vm.markers = points;
+                vm.addMarkerClickFunction(vm.markers);
+        });   
+      });
+    });
 
-  //   $scope.$watch('networkHistory.getHistoryPoints()', function(newVal, oldVal){
-  //   	console.log('changed');
-		// }, true);
 
-	// for some reason I was unable to do a $scope.watch to map the new point's onclick, had to resort to rootscope
-    $rootScope.$on('newPoint', function(value){
- 	  // remap the whole marker array, just adding the new one wasn't working
-      networkHistory.getHistoryPoints().then(function(points){
-				vm.markers = points;
-				vm.addMarkerClickFunction(vm.markers);
-			});			
-		});
-	}
-
+  }
 })();

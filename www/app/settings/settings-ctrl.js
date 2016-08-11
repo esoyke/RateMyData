@@ -47,6 +47,17 @@
 		vm.smallDL = function(){ return vm.downloadSize<1000;}
 		vm.largeDL = function(){ return !vm.smallDL();}
 
+		// low/medium and medium/high thresholds for map display
+   	vm.thresholdSlow = settings.thresholdSlow();
+		$scope.$watch('vm.thresholdSlow', function() {
+			settings.updateThresholdSlow(vm.thresholdSlow);
+		});
+
+   	vm.thresholdMedium = settings.thresholdMedium();
+		$scope.$watch('vm.thresholdMedium', function() {
+			settings.updateThresholdMedium(vm.thresholdMedium);
+		});
+
 		vm.confirmClearLocal = function() {    
       var confirmPopup = $ionicPopup.confirm({
           title: 'Confirm reset',

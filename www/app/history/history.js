@@ -25,25 +25,27 @@
 				// var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 				// _.extend(data, {icon: image});
 				// _.extend(data, {options: { title: ''+data.rate+' Kbps' }});
-				if (data.rate < 1){
-					 var image = 'img/circle-black.png';
-					_.extend(data, {icon: image});
-				}
-				else if (data.rate < settings.thresholdSlow){
-					 var image = 'img/circle-red.png';
-					_.extend(data, {icon: image});
-				}
-				else if (data.rate < settings.thresholdMedium){
-					 var image = 'img/circle-yellow.png';
-					_.extend(data, {icon: image});
-				}
-				else {
-					 var image = 'img/circle-green.png';
-					_.extend(data, {icon: image});
-				}
+				// console.log('settings.thresholdMedium(): ',settings.thresholdMedium());
+				// if (data.rate < 1){
+				// 	 var image = 'img/circle-black.png';
+				// 	_.extend(data, {icon: image});
+				// }
+				// else if (data.rate < settings.thresholdSlow()){
+				// 	 var image = 'img/circle-red.png';
+				// 	_.extend(data, {icon: image});
+				// }
+				// else if (data.rate < settings.thresholdMedium()){
+				// 	 var image = 'img/circle-yellow.png';
+				// 	_.extend(data, {icon: image});
+				// }
+				// else {
+				// 	 var image = 'img/circle-green.png';
+				// 	_.extend(data, {icon: image});
+				// }
 
 				// TODO - I'd prefer not to store all the stuff like icon & title, those should be derived from
-				// the data at map creation time instead
+				// the data at map creation time instead for less storage. Also by storing the icon we can't change 
+				// display thresholds dynamically
 				
 				if(vm.historyPoints==null)
 					vm.historyPoints = data;
@@ -53,53 +55,60 @@
 				// this was necessary to communicate the new point to the controller to map the new marker's onclick
 				$rootScope.$emit('newPoint', data);
 
+				// don't store image icons in cache
+				stripIcons();
 				self.historyCache.put('history', vm.historyPoints);	
-			// }, function(err) {
-   //    console.log('error:',err);
-   //  });
 
 		};
 
-		// mock function to mimic some local movement
-		// TODO replace with $cordovaGeolocation.getCurrentPosition, seems mocks isn't wotking
-		// function currentPosition(){
-		// 	var deferred = $q.defer();
-		// 	if(settings.DEVMODE()){
-		// 		console.log('Getting mocked geo...');
-		// 		// make it look like I took a random stroll around town
-		// 		var latVariation = Math.floor(Math.random() * 9999) + 1  ;
-		// 		var longVariation = Math.floor(Math.random() * 99999) + 1  ;
-		// 		var mockPosition = {coords:{latitude: 27.80+''+latVariation, longitude: -82.7+''+longVariation}};
-		// 		console.log('Mocked geo: ', mockPosition);
-		// 		deferred.resolve(mockPosition);
-		// 	}
-		// 	else{
-		// 		console.log('Getting Cordova geo...');
-		// 		$cordovaGeolocation.getCurrentPosition().then(function(cordovaPosition){
-		// 			console.log('Cordova geo: ', cordovaPosition);
-		// 			deferred.resolve(cordovaPosition);					
-		// 		}, function(err){
-		// 			console.log('error getting cordova geo: ', err);
-		// 		});				
-
-		// 	}
-		// 	return deferred.promise;
-		// };
 
 		// returns all history points (from local cache)
 		function getHistoryPoints(){
-			//console.log('getting history points');
 			var deferred = $q.defer();
-			//var historyPoints = self.historyCache.get('history');
-			//console.log(vm.historyPoints);
+
+			// add colored map icons to all points
+			decorateIcons();
+
 			deferred.resolve(vm.historyPoints);
 			return deferred.promise;
 		};
-		
+
+		// Add custom icon to a marker (assign each a reference to colored icon based on rate and thresholds)
+		function decorateIcons(){
+      angular.forEach(vm.historyPoints, function (data) {
+
+				if (data.rate < 1){
+					 var image = 'img/circle-black.png';
+					_.extend(data, {icon: image});
+				}
+				else if (data.rate < settings.thresholdSlow()){
+					 var image = 'img/circle-red.png';
+					_.extend(data, {icon: image});
+				}
+				else if (data.rate < settings.thresholdMedium()){
+					 var image = 'img/circle-yellow.png';
+					_.extend(data, {icon: image});
+				}
+				else {
+					 var image = 'img/circle-green.png';
+					_.extend(data, {icon: image});
+				}
+      });
+		}
+
+		// strip icons before persisting back to cache
+		function stripIcons(){
+			vm.historyPoints = _.map(vm.historyPoints, function(data) { return _.omit(data, 'icon'); });
+		}
+
+
 		// overwrite history localStorage cache
 		function clearLocal(){
+			console.log(vm.historyPoints);
 			console.log('clear local cache');
 			self.historyCache.put('history', {});
+			vm.historyPoints = [];
+			$rootScope.$emit('dataCleared');
 			// TODO - need to remove markers from existing map
 		};
 

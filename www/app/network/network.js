@@ -82,7 +82,7 @@
 			var FILE_SIZE = settings.downloadSize()*1000; //TODO- make an customizable option?
 			// TODO - still need a reliable download source, Netflix does a hash of the unixtime, along with some secret value, 
 			// (The links expire)
-			var tempNetflix = 'https://ipv4_1-cxl0-c173.1.mia003.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470934894&t=xU2A-TcwBXHsBHKUX-3pCo6-3Yk';
+			var tempNetflix = 'https://ipv4_1-cxl0-c144.1.mia003.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470944523&t=Rl1VwXooH2ZG9p_uHWU-8IWKD9I';
 			//replace their hard-coded file size with our packet size setting
 			var pos1 = tempNetflix.indexOf('/0-')+3;
 			var pos2 = tempNetflix.indexOf('?');

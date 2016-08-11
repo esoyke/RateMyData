@@ -3,7 +3,7 @@
   <h3>{{vm.markers.length}} points</h3>
     	<ion-list>
 			  <ion-item ng-repeat="item in vm.markers | orderBy:'id':true">
-			    {{item.id | date : 'medium'}} - {{item.rate}} - {{item.latitude}}/{{item.latitude}}
+			    {{item.id | date : 'MM/dd hh:mm:ss'}} - {{item.rate}} bps - {{item.latitude | number:3}}/{{item.latitude | number:3}}
 			  </ion-item>
 			</ion-list>
   </ion-content>
