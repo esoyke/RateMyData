@@ -65,6 +65,13 @@
 
 		var connection = {};
 
+		function decoratePosition(data, location){
+    	console.log(location);
+			var lat  = location.coords.latitude;
+      var long = location.coords.longitude;
+			console.log(lat+','+long);							
+			_.extend(data, {latitude:lat, longitude:long});
+		}
 
     // returns ms to download a given url object
     function pingDownload(netData) {
@@ -75,7 +82,7 @@
 			var FILE_SIZE = settings.downloadSize()*1000; //TODO- make an customizable option?
 			// TODO - still need a reliable download source, Netflix does a hash of the unixtime, along with some secret value, 
 			// (The links expire)
-			var tempNetflix = 'https://ipv4_1-cxl0-c119.1.mia003.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470863983&t=w_C0dfrOuWo_VJXFhdswlwV5DLw';
+			var tempNetflix = 'https://ipv4_1-cxl0-c173.1.mia003.ix.nflxvideo.net/speedtest/range/0-26214400?c=us&n=17406&v=3&e=1470934894&t=xU2A-TcwBXHsBHKUX-3pCo6-3Yk';
 			//replace their hard-coded file size with our packet size setting
 			var pos1 = tempNetflix.indexOf('/0-')+3;
 			var pos2 = tempNetflix.indexOf('?');
@@ -93,12 +100,7 @@
             var results = {'id': tEnd.getTime(), 'network': netData, 'elapsed':elapsed, 'size':FILE_SIZE/1000, 'rate': Math.round((FILE_SIZE/(elapsed/1000))/1000)};
             //decorate with current position
             currentPosition().then(function(location){
-            	console.log(location);
-							var lat  = location.coords.latitude;
-				      var long = location.coords.longitude;
-				      var title = 'time- ' + data.id;
-							console.log(lat+','+long);							
-							_.extend(data, {title: title, latitude:lat, longitude:long});
+            	decoratePosition(results, location);
 
 							// add the point to the history
 	            networkHistory.addPoint(results);
@@ -109,11 +111,15 @@
 
 					})
 				.error(function(err){
+					// Same as success only we set rate as 0
 					//console.log('Error with test download: ', err);
 					var results = {'id': new Date().getTime(), 'network': netData, 'elapsed':-1, 'size':FILE_SIZE/1000, 'rate': 0};
-          networkHistory.addPoint(results);
-					$ionicLoading.hide();
-						deferred.reject();
+            currentPosition().then(function(location){
+	          	decoratePosition(results, location);
+  		        networkHistory.addPoint(results);
+							$ionicLoading.hide();
+							deferred.reject();
+					 })
 				});
 			return deferred.promise;
     }

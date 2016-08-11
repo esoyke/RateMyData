@@ -40,7 +40,7 @@
         );			
     });	
 
-		vm.addMarkerClickFunction = function (markersArray) {
+	vm.addMarkerClickFunction = function (markersArray) {
         angular.forEach(markersArray, function (value, key) {
             value.onClick = function () {
             	// console.log(value);
@@ -70,7 +70,7 @@
       vm.addMarkerClickFunction(vm.markers);
     });
 
-		vm.MapOptions = {
+	vm.MapOptions = {
         minZoom: 3,
         zoomControl: false,
         draggable: true,
@@ -120,17 +120,14 @@
   //   	console.log('changed');
 		// }, true);
 
-		// for some reason I was unable to do a $scope.watch to map the new point's onclick, had to resort to rootscope
+	// for some reason I was unable to do a $scope.watch to map the new point's onclick, had to resort to rootscope
     $rootScope.$on('newPoint', function(value){
-		 	// remap the whole marker array, just adding the new one wasn't working
+ 	  // remap the whole marker array, just adding the new one wasn't working
       networkHistory.getHistoryPoints().then(function(points){
-	    	// console.log('remapped array: ',points);
 				vm.markers = points;
 				vm.addMarkerClickFunction(vm.markers);
 			});			
-
 		});
-
 	}
 
 })();

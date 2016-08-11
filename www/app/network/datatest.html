@@ -3,11 +3,13 @@
     <button class='button button-block button-positive' ng-click='vm.pingTest()'>Test Connection</button>
     <br><br>
     <div class='center'>
-	    <h1 ng-show='vm.downloadRatePretty'>{{vm.downloadRatePretty}}</h1>
-	    <h3 ng-show='vm.downloadSizePretty'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms</h3>
+	    <div class='variable-font-10' ng-show='vm.downloadRatePretty'>{{vm.downloadRatePretty}}</div>
+	    <br>
+<!-- 	    <div class='variable-font-10' ng-show='vm.downloadRatePretty'>&nbsp;</div> -->
+	    <div class='variable-font-3' ng-show='vm.downloadSizePretty'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms</div>
 
 	<!--     <h2 ng-show='vm.downloadSizePretty'>{{vm.downloadSizePretty}} in {{vm.downloadTime}}ms ({{vm.downloadRate | number:0}} Kbps)</h2> -->
-	    <h4 ng-show='vm.downloadTime && vm.networkType'>(over {{vm.networkType}})</h4>
+	    <div class='variable-font-3' ng-show='vm.downloadTime && vm.networkType'>(over {{vm.networkType}})</div>
 	  </div>
   </ion-content>
 </ion-view>

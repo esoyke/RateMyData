@@ -44,6 +44,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
       templateUrl: "app/home/home.html"
     })
 
+    // Manual test screen
     .state('home.network', {
       url: "/network",
       views: {
@@ -53,6 +54,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
       }
     })
 
+    // Mapping screen
     .state('home.networkMap', {
       url: "/networkMap",
       views: {
@@ -62,6 +64,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
       }
     })
 
+    // Settings screen
     .state('home.settings', {
       url: "/settings",
       views: {
@@ -71,20 +74,12 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
       }
     })
 
-    .state('app.locations', {
-      url: "/locations",
+    // Dev screen
+    .state('home.devscreen', {
+      url: "/devscreen",
       views: {
-        'menuContent': {
-          templateUrl: "app/locations/locations.html"
-        }
-      }
-    })
-
-    .state('app.location-map', {
-      url: "/location-map/:id",
-      views: {
-        'menuContent': {
-          templateUrl: "app/locations/location-map.html"
+        "tab-devscreen": {
+          templateUrl: "app/home/devscreen.html"
         }
       }
     })
@@ -92,7 +87,7 @@ angular.module("rateMyData", ["ionic", "angular-data.DSCacheFactory", "ngCordova
     ;
 
     // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home/network');
+  $urlRouterProvider.otherwise('/home/devscreen');
 })
 
 // .config(function(uiGmapGoogleMapApiProvider) {

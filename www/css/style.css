@@ -20,6 +20,28 @@
   color:  green;
 }
 
+/* playing with variable resizing fonts */
+.variable-font-3 {
+  letter-spacing: 1vh;
+  font-size: 3vh;
+  margin-bottom: 1vh;
+}
+.variable-font-5 {
+  letter-spacing: 1vh;
+  font-size: 5vh;
+  margin-bottom: 1vh;
+}
+.variable-font-10 {
+  letter-spacing: 1vh;
+  font-size: 10vh;
+  margin-bottom: 2vh;
+}
+.variable-font-20 {
+  letter-spacing: 1vh;
+  font-size: 20vh;
+  margin-bottom: 1vh;
+}
+
 .no-border {
   border: 0;
 }

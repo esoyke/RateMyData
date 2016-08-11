@@ -1,0 +1,10 @@
+<ion-view title='Network Performance' ng-controller='HistoryCtrl as vm'>
+  <ion-content class='has-header padding'>
+  <h3>{{vm.markers.length}} points</h3>
+    	<ion-list>
+			  <ion-item ng-repeat="item in vm.markers | orderBy:'id':true">
+			    {{item.id | date : 'medium'}} - {{item.rate}} - {{item.latitude}}/{{item.latitude}}
+			  </ion-item>
+			</ion-list>
+  </ion-content>
+</ion-view>
