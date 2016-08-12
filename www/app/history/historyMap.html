@@ -1,22 +1,40 @@
-<ion-view title='History Map' ng-controller='HistoryCtrl as vm' class="angular-google-map-container">
+<ion-view title='History Map' ng-controller='HistoryCtrl as history' class="angular-google-map-container">
   <!-- <ion-content class="has-header"> -->
   <ion-content class="has-no-header">
 
+  	<!-- Note: when using controllerAs syntax, you need to use the same name if you want to reuse the same controller across different views (like I'm doing with settings-->
+  	<!-- TODO make these controls smaller ans less shitty looking -->
+  	<div class='padding' ng-controller='SettingsCtrl as vm'>
+	    <h3>Low/Medium threshold - {{vm.thresholdSlow}}</h3>
+	    <div class="item range no-border">
+	      <i class="icon ion-location"></i>
+	      <input type="range" name="thresholdSlow" min="1" max="5000" ng-model="vm.thresholdSlow" >
+	      <i class="icon ion-location icon-larger padding-right-50"></i>
+	    </div>
+
+	    <h3>Medium/High threshold - {{vm.thresholdMedium}}</h3>
+	    <div class="item range no-border">
+	      <i class="icon ion-location"></i>
+	      <input type="range" name="thresholdMedium" min="1" max="5000" ng-model="settings.thresholdMedium" >
+	      <i class="icon ion-location icon-larger padding-right-50"></i>
+	    </div>
+		</div>
+  		
   		<!-- consider ultimately using a heatmap when we are showing more data / peer data? -->
-			<ui-gmap-google-map center="vm.map.center" zoom="vm.map.zoom" draggable="true" options="vm.map.options" events="vm.map.events" control="vm.googlemap">
-				<ui-gmap-markers models="vm.markers" idKey='vm.markers.id' coords="'self'" icon="'icon'" options="'options'" click="onClick" events="markers.events">
-				<!-- doRebuildAll="true"  click="vm.clickMapPoint(rate)" -->
+			<ui-gmap-google-map center="history.map.center" zoom="history.map.zoom" draggable="true" options="history.map.options" events="history.map.events" control="history.googlemap">
+				<ui-gmap-markers models="history.markers" idKey='history.markers.id' coords="'self'" icon="'icon'" options="'options'" click="onClick" events="markers.events">
+				<!-- doRebuildAll="true"  click="history.clickMapPoint(rate)" -->
         </ui-gmap-markers>
-        <ui-gmap-window coords="vm.MapOptions.markers.selected" show="vm.windowOptions.show" options="vm.windowOptions" closeClick="vm.closeClick()">
+        <ui-gmap-window coords="history.MapOptions.markers.selected" show="history.windowOptions.show" options="history.windowOptions" closeClick="history.closeClick()">
         	<div>
         		<!-- TODO why is ng-show not showing these conditionals? -->
-<!-- 		        <h2 ng-show="vm.isSlow(vm.MapOptions.markers.selected.rate)" class='color-red'>{{vm.MapOptions.markers.selected.rate}} Kbps</h2>
-		        <h2 ng-show="vm.isMedium(vm.MapOptions.markers.selected.rate)" class='color-yellow'>{{vm.MapOptions.markers.selected.rate}} Mbps</h2>
-		        <h2 ng-show="vm.isFast(vm.MapOptions.markers.selected.rate)" class='color-green'>{{vm.MapOptions.markers.selected.rate}} Mbps</h2>
+<!-- 		        <h2 ng-show="history.isSlow(history.MapOptions.markers.selected.rate)" class='color-red'>{{history.MapOptions.markers.selected.rate}} Kbps</h2>
+		        <h2 ng-show="history.isMedium(history.MapOptions.markers.selected.rate)" class='color-yellow'>{{history.MapOptions.markers.selected.rate}} Mbps</h2>
+		        <h2 ng-show="history.isFast(history.MapOptions.markers.selected.rate)" class='color-green'>{{history.MapOptions.markers.selected.rate}} Mbps</h2>
  -->
-		        <h2>{{vm.MapOptions.markers.selected.rate}} Kbps</h3>
-	  	      <h5>{{vm.MapOptions.markers.selected.size}} KB in {{vm.MapOptions.markers.selected.elapsed}} ms ({{vm.MapOptions.markers.selected.network}})</h5>
-	  	      <h5>{{vm.MapOptions.markers.selected.id | date:'medium' }}</h5>
+		        <h2>{{history.MapOptions.markers.selected.rate}} Kbps</h3>
+	  	      <h5>{{history.MapOptions.markers.selected.size}} KB in {{history.MapOptions.markers.selected.elapsed}} ms ({{history.MapOptions.markers.selected.network}})</h5>
+	  	      <h5>{{history.MapOptions.markers.selected.id | date:'medium' }}</h5>
 		      </div>
         </ui-gmap-window>
 		</ui-gmap-google-map>
